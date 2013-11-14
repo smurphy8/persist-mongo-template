@@ -1,8 +1,13 @@
-{-# LANGUAGE OverloadedStrings, TypeFamilies, QuasiQuotes,
-  TemplateHaskell, MultiParamTypeClasses, GADTs, FlexibleContexts,RankNTypes
-, EmptyDataDecls #-}
-
-
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE EmptyDataDecls    #-}
+{-# LANGUAGE FlexibleContexts  #-}
+{-# LANGUAGE GADTs             #-}
+{-# LANGUAGE QuasiQuotes       #-}
+{-# LANGUAGE TemplateHaskell   #-}
+{-# LANGUAGE TypeFamilies      #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE RankNTypes #-}
 module Persist.Mongo.Settings where
 
 import Yesod.Core (MonadIO,MonadBaseControl)
@@ -13,6 +18,7 @@ import Database.Persist.Quasi (lowerCaseSettings)
 import Network (PortID (PortNumber))
 import Database.Persist.TH
 import Language.Haskell.TH.Syntax
+import Data.Time
 import Control.Applicative ((<$>), (<*>), liftA2, Applicative)
 
 -- share [mkPersist (mkPersistSettings (ConT ''MongoBackend)) { mpsGeneric = False }, mkMigrate "migrateAll"][persistLowerCase|

@@ -1,5 +1,5 @@
 Name:                   persist-mongo-template
-Version:                0.0.1
+Version:                0.0.2
 Author:                 Scott Murphy<scottmurphy09@gmail.com>
 Maintainer:             Scott Murphy<scottmurphy09@gmail.com>
 License:                BSD3
@@ -20,6 +20,7 @@ Library
                        ,safe                     >= 0.3.3     &&   < 0.4.3
                        ,text                     >= 0.11.3.1  &&   < 0.11.3.3
                        ,transformers             >= 0.3.0.0
+                       ,time
 -- Going to try specifically leaving versions off for template style builds 
                        ,monad-control
                        ,network

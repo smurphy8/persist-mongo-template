@@ -1,3 +1,67 @@
+
 OnpingTagCombined
   location_id               Int   Maybe
+  slave_parameter_id        Int   Maybe
+  parameter_tag_id          Int   Maybe
+  description               Text  Maybe  
+  unit_id                   Int   Maybe 
+  status_active             Int   Maybe 
+  status_writable           Int   Maybe
+  last_update               UTCTime Maybe 
+  result                    Text  Maybe  
+  validation_code           Text  Maybe  
+  permissions               Int   Maybe 
+  delete                    Int   Maybe 
+  companyIdRef		    Int   Maybe
+  siteIdRef                 Int   Maybe						
+  location		    Location Maybe
+  pid			    Int Maybe
+
+
+OnpingTagHistory
+  pid			    Int Maybe
+  time			    UTCTime Maybe
+  val			    Double Maybe
+  deriving Show
+
+--Quieries
+  
+  
+
+-- Smaller collection for testing MongoDB ideas
+TestCollection
+  idx Int Maybe
+  val Int Maybe
+  time UTCTime Maybe
+
+
+-- Parameters always have their own Company, Site, location But
+-- sometimes it is useful to have them separated 
+
+
+Site
+   companyIdRef Int
+   name Text
+   pull Int
+   delete Int
+   siteIdRef Int
+   UniqueSite name
+
+
+
+Location 
+   siteIdRef Int
+   slaveId   Int 
+   refId     Int --same as location_id
+   name Text 
+   url Text 
+   delete   Int
+   companyIdRef Int
+   UniqueLocation refId
+
+Unit 
+  name Text 
+  si Text 
+  delete Int
+  uid    Int
 
