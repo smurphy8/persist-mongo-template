@@ -5,4 +5,4 @@ import Prelude (($))
 import Database.Persist
 import Database.Persist.Class
 
-main = runDB $ selectList [] [Asc QuestionnaireId]
+main = runDB $ selectList [] [Asc OnpingTagCombinedLocation_id]
