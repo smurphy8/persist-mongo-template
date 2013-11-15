@@ -16,17 +16,15 @@ import Language.Haskell.TH
 import Language.Haskell.TH.Syntax
 import qualified Data.Set as Set
 import qualified Data.Foldable as F
---import Persist.Mongo.Settings
 import ContentCfgTypes
-import Data.Char (toLower)
--- import Data.Text
+import Data.Char (toLower,toUpper)
 
 
 
 -- |  Lens naming section ================================
 
 mLowerName :: String -> Maybe String
-mLowerName (c:cs) = Just ('l':'e':'n':'s':c:cs)
+mLowerName (c:cs) = Just ('l':'e':'n':'s':(toUpper c):cs)
 mLowerName _ = Nothing
 
 
@@ -57,53 +55,5 @@ persistMakeClassy = makeLensesWith persistClassyRules
 
 
 
-{-|
-Dashboard
-  owner UserId Maybe
-  gId GroupId Maybe
-  group Group Maybe
-  name Text Maybe default="Stupid"
-  notes Text Maybe
-  default Bool Maybe
-  header HeaderWidget Maybe 
-  panels [MenuPanel] Maybe
 
-|-}
-
--- dashboardLensNames :: [(String,String)]
--- dashboardLensNames = [ 
--- ("owner"    , "lensDashboardOwner"   )
--- ("gId"      , "lensDashboardGid"     )
--- ("group"    , "lensDashboardGroup"   )
--- ("name"     , "lensDashboardName"    )
--- ("notes"    , "lensDashboardNotes"   )
--- ("default"  , "lensDashboardDefault" )
--- ("header"   , "lensDashboardHeader"  )
--- ("panels"   , "lensDashboardPanels")
--- ]  
-
-
-
-{-|         
-MenuPanel
-  bidx BranchIndex 
-  open Bool 
-  mconfig MConfigObject 
-  sub SubObject Maybe
-  carr ContentArray Maybe
-  name Text Maybe         
-|-}
-
-
-
-
-
-
-
--- ("bidx"     , "bidx")    
--- ("open"     , "open")    
--- ("mconfig"  , "mconfig") 
--- ("sub"      , "sub")     
--- ("carr"     , "carr")    
--- ("name"     , "name")    
 

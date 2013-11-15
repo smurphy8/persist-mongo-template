@@ -19,7 +19,7 @@ data SplineConfigObj =  SplineConfigObj {
      ,splineDescriptionList :: Text
      ,splineLocationList :: Text
      ,splineGraphList :: Text
-     ,splineSecondYAxisList :: Text
+--     ,splineSecondYAxisList :: Text
     }
    deriving (Read, Show,Eq)
 
@@ -39,8 +39,8 @@ instance FromJSON SplineConfigObj where
                           tObj .: "legend" <*>
                           tObj .: "descriptionList" <*>
                           tObj .: "locationList" <*>
-                          tObj .: "graphList"    <*>
-                          tObj .: "secondYAxisList"
+                          tObj .: "graphList"   --  <*>
+--                          tObj .: "secondYAxisList"
 
 
     parseJSON _ = fail "Rule: Expecting Test Object Received, Other"
@@ -58,7 +58,7 @@ instance ToJSON SplineConfigObj where
                          ,"descriptionList" .= splineDescriptionList
                          ,"locationList" .= splineLocationList
                          ,"graphList" .= splineGraphList
-                         ,"secondYAxisList" .= splineSecondYAxisList
+--                         ,"secondYAxisList" .= splineSecondYAxisList
                          ]
 
 
@@ -76,8 +76,8 @@ runSplineConfigObj (t,v)
   | t == "descriptionList" = (t .= textVal v)
   | t == "locationList" = (t .= textVal v)
   | t == "graphList" = (t .= textVal v)
-  | t == "secondYAxisList" = (t .= textVal v)
+--  | t == "secondYAxisList" = (t .= textVal v)
   | otherwise = (t .= toJSON v)
 
 defaultSCO :: SplineConfigObj
-defaultSCO = SplineConfigObj 600 "Enter Title Here" "" 3 "hour" "" 1 "" "" "" ""
+defaultSCO = SplineConfigObj 600 "Enter Title Here" "" 3 "hour" "" 1 "" "" "" -- ""
