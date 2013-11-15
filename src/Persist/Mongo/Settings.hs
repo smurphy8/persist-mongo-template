@@ -6,6 +6,7 @@
 {-# LANGUAGE TemplateHaskell   #-}
 {-# LANGUAGE TypeFamilies      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE RankNTypes #-}
 
@@ -35,6 +36,7 @@ import Database.Persist
 import Database.Persist.MongoDB
 import Database.Persist.Quasi (lowerCaseSettings)
 import Network (PortID (PortNumber))
+import Control.Lens.Lens
 import Database.Persist.TH
 import Language.Haskell.TH.Syntax
 import Data.Time
@@ -68,6 +70,16 @@ runDB a = withMongoDBConn "onping_production" "localhost" (PortNumber 27017) Not
 
 
 
+{-|
+data Entity entity =
+    Entity { entityKey :: Key entity
+           , entityVal :: entity }
+    deriving (Eq, Ord, Show, Read)
+|-}
+
+-- | lensEntity :: Lens (Entity a) (Entity b) a b
+lensEntityVal :: Functor f => (a -> f a) -> Entity a -> f (Entity a)
+lensEntityVal  f (Entity k v) = fmap (Entity k) (f v)
 
 persistMakeClassy ''SplineConfigObj
 
