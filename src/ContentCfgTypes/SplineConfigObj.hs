@@ -7,7 +7,7 @@ import Control.Applicative ((<$>), (<*>))
 import Yesod
 import Data.Text
 import ContentCfgTypes.Util
-
+import Text.Parsec
 data SplineConfigObj =  SplineConfigObj { 
      splineStep :: Int
      ,splineTitle :: Text
@@ -19,13 +19,13 @@ data SplineConfigObj =  SplineConfigObj {
      ,splineDescriptionList :: Text
      ,splineLocationList :: Text
      ,splineGraphList :: Text
---     ,splineSecondYAxisList :: Text
+     ,splineSecondYAxisList :: Text
     }
-   deriving (Read, Show,Eq)
+   deriving (Read,Show,Eq)
 
 
 
-
+localParseTest = "SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\", splineSecondYAxisList = \"\"}"
 
 
 instance FromJSON SplineConfigObj where 
@@ -39,8 +39,8 @@ instance FromJSON SplineConfigObj where
                           tObj .: "legend" <*>
                           tObj .: "descriptionList" <*>
                           tObj .: "locationList" <*>
-                          tObj .: "graphList"   --  <*>
---                          tObj .: "secondYAxisList"
+                          tObj .: "graphList"     <*>
+                          tObj .: "secondYAxisList"
 
 
     parseJSON _ = fail "Rule: Expecting Test Object Received, Other"
@@ -58,7 +58,7 @@ instance ToJSON SplineConfigObj where
                          ,"descriptionList" .= splineDescriptionList
                          ,"locationList" .= splineLocationList
                          ,"graphList" .= splineGraphList
---                         ,"secondYAxisList" .= splineSecondYAxisList
+                         ,"secondYAxisList" .= splineSecondYAxisList
                          ]
 
 
@@ -76,8 +76,8 @@ runSplineConfigObj (t,v)
   | t == "descriptionList" = (t .= textVal v)
   | t == "locationList" = (t .= textVal v)
   | t == "graphList" = (t .= textVal v)
---  | t == "secondYAxisList" = (t .= textVal v)
+  | t == "secondYAxisList" = (t .= textVal v)
   | otherwise = (t .= toJSON v)
 
 defaultSCO :: SplineConfigObj
-defaultSCO = SplineConfigObj 600 "Enter Title Here" "" 3 "hour" "" 1 "" "" "" -- ""
+defaultSCO = SplineConfigObj 600 "Enter Title Here" "" 3 "hour" "" 1 "" "" "" ""
