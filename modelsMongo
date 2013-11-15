@@ -38,7 +38,7 @@ Dashboard
   owner UserId Maybe
   gId GroupId Maybe
   group Group Maybe
-  name Text Maybe default="Stupid"
+  name Text Maybe 
   notes Text Maybe
   default Bool Maybe
   header HeaderWidget Maybe 

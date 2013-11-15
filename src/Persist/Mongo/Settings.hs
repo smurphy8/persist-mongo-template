@@ -12,7 +12,7 @@
 module Persist.Mongo.Settings where
 
 
-
+import Persist.Mongo.Lens
 import Yesod hiding (runDB)
 -- import Data.Text (Text)
 -- import Database.Persist.Quasi
@@ -67,3 +67,6 @@ runDB a = withMongoDBConn "onping_production" "localhost" (PortNumber 27017) Not
   (runMongoDBPool master a )  pool
 
 
+
+
+persistMakeClassy ''Dashboard
