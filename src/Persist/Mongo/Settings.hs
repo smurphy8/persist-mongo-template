@@ -69,4 +69,12 @@ runDB a = withMongoDBConn "onping_production" "localhost" (PortNumber 27017) Not
 
 
 
+persistMakeClassy ''ContentObj
+
+persistMakeClassy ''ContentArray
+
+persistMakeClassy ''MenuPanel
+
 persistMakeClassy ''Dashboard
+
+
