@@ -14,14 +14,35 @@ Library
   HS-Source-Dirs:       src
   GHC-Options:          -Wall
   Exposed-Modules:      Persist.Mongo.Settings
+                        ContentCfgTypes
+                        ContentCfgTypes.SplineConfigObj
+                        ContentCfgTypes.Util
+                        ContentCfgTypes.TankConfigObj
+                        ContentCfgTypes.TankGaugeConfigObj
+                        ContentCfgTypes.AngularGaugeConfigObj
+                        ContentCfgTypes.AutoReportConfigObj
+                        ContentCfgTypes.StatusConfigObj
+                        ContentCfgTypes.ParameterHistoryConfigObj
+                        ContentCfgTypes.MultiParameterHistoryConfigObj
+                        ContentCfgTypes.TableByMultiLocConfigObj                        
+                        ContentCfgTypes.TableByLocConfigObj
+                        Persist.Mongo.Lens
+                        WidgetTypes
+
   Other-Modules:        Persist.Mongo.Settings.Internal
   Build-Depends:        base                     >= 4         &&   < 5
                        ,hspec                    >= 1.7.2     &&   < 1.7.3
                        ,safe                     >= 0.3.3     &&   < 0.4.3
                        ,text                     >= 0.11.3.1  &&   < 0.11.3.3
                        ,transformers             >= 0.3.0.0
+                       ,lens                     >= 3.2       &&   < 3.9
+                       ,bytestring
                        ,time
+                       ,old-locale
+                       ,mongoDB
 -- Going to try specifically leaving versions off for template style builds 
+
+                       ,aeson
                        ,monad-control
                        ,network
                        ,yesod-core

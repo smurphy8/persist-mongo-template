@@ -1,3 +1,145 @@
+User
+    ident Text
+    password Text Maybe
+    UniqueUser ident
+   
+    
+
+Email
+    email Text
+    user UserId Maybe
+    verkey Text Maybe
+    UniqueEmail email
+
+ -- By default this file is used in Model.hs (which is imported by Foundation.hs)
+
+-- Because the auth structure requires a special user thing I just have made a new user tag
+-- I don't think it will be a problem but we will see
+
+UserTag
+  user UserId       -- user id of THIS user
+  owner UserId      -- person who created this user
+  group GroupId     -- group this user is a part of by default
+  superGroup GroupId   -- owner Group
+  defaultDash  DashboardId
+  UniqueUserTag user --REMEMBER THIS HAS TO BE PAIRED WITH AN ENSURE INDEX
+  
+ 
+  deriving Read
+  deriving Show
+  deriving Eq
+
+
+
+  
+-- =====================DASHBOARD TYPES ===============================
+
+Dashboard
+  owner UserId Maybe
+  gId GroupId Maybe
+  group Group Maybe
+  name Text Maybe default="Stupid"
+  notes Text Maybe
+  default Bool Maybe
+  header HeaderWidget Maybe 
+  panels [MenuPanel] Maybe
+
+ 
+
+
+
+-- Sub Object is my workaround for adding pieces to a panel
+SubObject
+ panels [MenuPanel]
+
+
+ContentObj
+ icon Text
+ title Text
+ link Text
+ size Int
+ plist ContentConfig Maybe
+ minState Bool Maybe
+ editState Bool Maybe
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+ContentArray 
+ arr [ContentObj]
+
+
+MenuPanel
+  bidx BranchIndex 
+  open Bool 
+  mconfig MConfigObject 
+  sub SubObject Maybe
+  carr ContentArray Maybe
+  name Text Maybe
+
+SubMenuJoin
+  parent MenuPanelId
+  child MenuPanelId
+
+ContentArrayJoin
+ panel MenuPanelId
+ content ContentArrayId
+
+
+
+
+
+
+
+-- =======================================================================
+Group
+    owner UserId    -- who made this group
+    group GroupId  -- owner group
+    name Text
+    description Textarea
+    UniqueGroup name
+   
+    deriving Read
+    deriving Show
+    deriving Eq		
+
+
+GroupUserJoin
+    gId   GroupId 
+    uId   UserId 
+    UniqueGroupUserJoin gId uId
+    deriving Read
+    deriving Show
+
+OnpingAlarmCombined
+    location_id  Int
+    timer_unit_id  Int Maybe
+    group_id  Int Maybe
+    name  Text
+    alias  Text Maybe
+    description  Text Maybe
+    text_message  Text Maybe
+    code  Text Maybe 
+    last_update  Text Maybe
+    result  Text Maybe 
+    status_enabled  Int Maybe
+    status_user_enabled  Int Maybe 
+    status_force_trip  Int Maybe
+    timer_active  Int Maybe
+    timer_recall  Int Maybe
+    timer_cleared  Int Maybe
+    delete  Int Maybe
+    UniqueAlarmCombined name location_id
 
 OnpingTagCombined
   location_id               Int   Maybe
@@ -18,13 +160,28 @@ OnpingTagCombined
   pid			    Int Maybe
 
 
+
+
+-- LocationTableWidget
+--   pidlist [Text]
+--   descriptionlist [Text]
+--   locationlist [Text]
+--   keyparams [[[Text]]]
+
 OnpingTagHistory
   pid			    Int Maybe
   time			    UTCTime Maybe
   val			    Double Maybe
-  deriving Show
+
 
 --Quieries
+
+ParameterHistory
+  startDate UTCTime Maybe
+  endDate   UTCTime Maybe
+  locationId Int Maybe
+  slave_parameter_id Int Maybe
+  
   
   
 
@@ -37,6 +194,21 @@ TestCollection
 
 -- Parameters always have their own Company, Site, location But
 -- sometimes it is useful to have them separated 
+
+Company
+   name                     Text
+   address                  Text
+   city                     Text
+   state                    Text
+   zip                      Text
+   delete                   Int
+   companyIdRef             Int
+   group                    GroupId Maybe
+   owner                    UserId  Maybe
+   UniqueCompany name
+   UniqueCompanyId companyIdRef
+
+
 
 
 Site
@@ -58,6 +230,13 @@ Location
    delete   Int
    companyIdRef Int
    UniqueLocation refId
+Robot
+   name  Text
+   password Text
+   salt Text 
+   UniqueRobotName name
+  
+
 
 Unit 
   name Text 
@@ -65,3 +244,38 @@ Unit
   delete Int
   uid    Int
 
+-- Widget Types
+
+LocationTableWidget
+    pidlist [Text]
+    descriptionlist [Text]
+    locationlist [Text]
+    keyparams [[[Text]]]
+    
+
+MultiLocationTableWidget
+    locationlist [Text]
+    keyparams [[Text]]
+    slaveids [Text]
+    locationNames [Text]
+    
+
+PDFTableWidget
+    pdflist [Text]
+    
+
+CalendarWidget
+    calendarid Int
+    
+
+Prospective 
+    user  Text
+
+ReportRow 
+    rname Text
+    rdata [Int]
+    
+
+AutoReport
+    arData [ReportRow]
+    

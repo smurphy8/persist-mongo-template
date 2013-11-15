@@ -1,8 +1,10 @@
 {-# LANGUAGE NoImplicitPrelude,OverloadedStrings #-}
 module Main where
 import Persist.Mongo.Settings
-import Prelude (($))
+import Prelude (print,($),(.))
 import Database.Persist
 import Database.Persist.Class
-
-main = runDB $ selectList [] [Asc OnpingTagCombinedLocation_id]
+import Control.Applicative ((<$>), (<*>), liftA2, Applicative)
+main = do 
+  res <- runDB $ selectList [] [Asc DashboardId]
+  print $ dashboardDefault.entityVal <$> res 
