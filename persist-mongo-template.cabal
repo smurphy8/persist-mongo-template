@@ -14,6 +14,7 @@ Library
   HS-Source-Dirs:       src
   GHC-Options:          -Wall
   Exposed-Modules:      Persist.Mongo.Settings
+                        Persist.Mongo.Lens
                         ContentCfgTypes
                         ContentCfgTypes.SplineConfigObj
                         ContentCfgTypes.Util
@@ -26,7 +27,7 @@ Library
                         ContentCfgTypes.MultiParameterHistoryConfigObj
                         ContentCfgTypes.TableByMultiLocConfigObj                        
                         ContentCfgTypes.TableByLocConfigObj
-                        Persist.Mongo.Lens
+
                         WidgetTypes
 
   Other-Modules:        Persist.Mongo.Settings.Internal
