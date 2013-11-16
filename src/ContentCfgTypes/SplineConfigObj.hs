@@ -3,7 +3,7 @@ module ContentCfgTypes.SplineConfigObj where
 
 import Prelude hiding (head, init, last
                       ,readFile, tail, writeFile)
-import Control.Applicative ((<$>), (<*>))
+import Control.Applicative ((<$>), (<*>),(<|>),(<*))
 import Yesod
 import Data.Text
 import ContentCfgTypes.Util
@@ -27,6 +27,18 @@ data SplineConfigObj =  SplineConfigObj {
 
 localParseTest = "SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\", splineSecondYAxisList = \"\"}"
 
+testLocalParse :: SplineConfigObj
+testLocalParse = read localParseTest
+
+-- readSplineConfig :: ParsecT String u m SplineConfigObj
+-- readSplineConfig = string "SplineConfigObj" >> valueParser <* eof
+--     where 
+--       valueParser = spaces >> do { char '{';
+--                                    n <- splineStep <<
+
+              
+  
+  
 
 instance FromJSON SplineConfigObj where 
     parseJSON (Object tObj) = SplineConfigObj <$>  
