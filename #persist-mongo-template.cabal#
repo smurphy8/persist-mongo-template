@@ -14,7 +14,6 @@ Library
   HS-Source-Dirs:       src
   GHC-Options:          -Wall
   Exposed-Modules:      Persist.Mongo.Settings
-                        Persist.Mongo.Lens
                         ContentCfgTypes
                         ContentCfgTypes.SplineConfigObj
                         ContentCfgTypes.Util
@@ -27,7 +26,7 @@ Library
                         ContentCfgTypes.MultiParameterHistoryConfigObj
                         ContentCfgTypes.TableByMultiLocConfigObj                        
                         ContentCfgTypes.TableByLocConfigObj
-
+                        Persist.Mongo.Lens
                         WidgetTypes
 
   Other-Modules:        Persist.Mongo.Settings.Internal
@@ -37,7 +36,6 @@ Library
                        ,text                     >= 0.11.3.1  &&   < 0.11.3.3
                        ,transformers             >= 0.3.0.0
                        ,lens                     >= 3.2       &&   < 3.9
-                       ,parsec
                        ,containers
                        ,bytestring
                        ,time
@@ -73,6 +71,7 @@ Executable persist-mongo-template
     main-is:            Main.hs
     HS-Source-Dirs:     src
     build-depends:      base
+                                          
     ghc-options:      -threaded -O2 -rtsopts
 
 Source-Repository head
