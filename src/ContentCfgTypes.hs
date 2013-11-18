@@ -187,15 +187,17 @@ exTransformObj (t,v)
 
 parseTest :: String 
 parseTest = "SplineConfig (SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\", splineSecondYAxisList = \"\"})"
+altParseTest = "SplineConfig (SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\"})"
 
-altParseTest = "SplineConfig (SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\", splineSecondYAxisList = \"\"})"
+
+unlocalParseTest = "(((SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\"})))"
  
+
+altSplineConfigText :: SplineConfigObj 
+altSplineConfigText = read unlocalParseTest
 
 contentConfigTest :: ContentConfig
 contentConfigTest = read parseTest
 
 altContentConfigTest :: ContentConfig
-altContentConfigTest = read parseTest
-
-
-
+altContentConfigTest = read altParseTest

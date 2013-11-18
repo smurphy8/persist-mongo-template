@@ -9,12 +9,14 @@ import Data.Text
 import Data.Maybe
 import Data.Functor.Identity
 import ContentCfgTypes.Util
+import Debug.Trace
 import Text.Read
 import Text.Parsec
 import Text.Parsec.Prim
 import Text.Parsec.String
 import Text.Parsec.Language
 import qualified Text.Parsec.Token as P 
+
 data SplineConfigObj =  SplineConfigObj { 
      splineStep :: Int
      ,splineTitle :: Text
@@ -29,22 +31,20 @@ data SplineConfigObj =  SplineConfigObj {
      ,splineSecondYAxisList :: Text
     }
    deriving (Show,Eq)
-
-
 -- withRemaining :: Parser a -> Parser (a, String)
 withRemaining p = (,) <$> p <*> getInput
 
 parsecToReadsPrec parsecParser prec input
     = case parse (withRemaining $ parsecParser) "" input of
-        Left _ -> []
+        Left s -> traceShow s []
         Right result -> [result]
 
 
 instance Read SplineConfigObj where
     readsPrec d r = splineConfigObjReads d r
 
-splineConfigObjReads = parsecToReadsPrec parserSplineConfigObj 
-
+splineConfigObjReads = parsecToReadsPrec lexSplineConfigObj --parserSplineConfigObj 
+                       
 
 
 
@@ -68,11 +68,17 @@ def = emptyDef { P.reservedNames = [
                ,P.reservedOpNames = ["="]}
 
 
+
+
 spline_lexer :: P.GenTokenParser String u Identity 
 spline_lexer = P.makeTokenParser def 
 
+
+lexeme = P.lexeme spline_lexer
 reserved = P.reserved spline_lexer
 reservedOp = P.reservedOp spline_lexer
+
+lParens = P.parens spline_lexer
 
 integer :: ParsecT String u Identity Int
 integer = P.integer spline_lexer >>= return.fromIntegral
@@ -85,21 +91,25 @@ comma = P.comma spline_lexer
 
 parseSplineStep = do  { reserved "splineStep";   reservedOp "=" ;  integer }
 parserSplineTitle           =     do { reserved  "splineTitle"           ;  reservedOp  "="; text }
-parserSplineParamIds        =     do { reserved  "splineParamIds"        ;  reservedOp         "="; text }
-parserSplineTime            =     do { reserved  "splineTime"            ;  reservedOp             "="; integer }
-parserSplineTimeUnit        =     do { reserved  "splineTimeUnit"        ;  reservedOp         "="; text }
-parserSplineEndDate         =     do { reserved  "splineEndDate"         ;  reservedOp          "="; text }
-parserSplineLegend          =     do { reserved  "splineLegend"          ;  reservedOp           "=";integer  }
+parserSplineParamIds        =     do { reserved  "splineParamIds"        ;  reservedOp  "="; text }
+parserSplineTime            =     do { reserved  "splineTime"            ;  reservedOp  "="; integer }
+parserSplineTimeUnit        =     do { reserved  "splineTimeUnit"        ;  reservedOp  "="; text }
+parserSplineEndDate         =     do { reserved  "splineEndDate"         ;  reservedOp  "="; text }
+parserSplineLegend          =     do { reserved  "splineLegend"          ;  reservedOp  "="; integer  }
 parserSplineDescriptionList =     do { reserved  "splineDescriptionList" ;  reservedOp  "="; text }
-parserSplineLocationList    =     do { reserved  "splineLocationList"    ;  reservedOp     "="; text }
-parserSplineGraphList       =     do { reserved  "splineGraphList"       ;  reservedOp        "="; text }
+parserSplineLocationList    =     do { reserved  "splineLocationList"    ;  reservedOp  "="; text }
+parserSplineGraphList       =     do { reserved  "splineGraphList"       ;  reservedOp  "="; text }
 parserSplineSecondYAxisList = do { 
                                 comma;     
                                 reserved  "splineSecondYAxisList" ;  reservedOp  "="; text }
                               <|> return ""
 
 
+lexSplineConfigObj = spaces>>parenthesizedSplineConfigObj
 
+
+parenthesizedSplineConfigObj = do {lParens parenthesizedSplineConfigObj;}
+                               <|> parserSplineConfigObj
 
 parserSplineConfigObj = do  { 
                           reserved "SplineConfigObj" ; 
@@ -122,10 +132,9 @@ parserSplineConfigObj = do  {
   
 
 
-localParseTest = "SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\"}"
+localParseTest = "  (((SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\"})))"
 testLocalParse :: SplineConfigObj
 testLocalParse = read localParseTest
-
 
 
 -- readSplineConfig :: ParsecT String () IO Int
