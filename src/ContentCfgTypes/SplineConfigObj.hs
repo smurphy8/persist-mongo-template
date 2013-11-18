@@ -8,6 +8,8 @@ import Yesod
 import Data.Text
 import ContentCfgTypes.Util
 import Text.Parsec
+import Text.Parsec.Prim
+import Text.Parsec.String
 data SplineConfigObj =  SplineConfigObj { 
      splineStep :: Int
      ,splineTitle :: Text
@@ -30,14 +32,19 @@ localParseTest = "SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title
 testLocalParse :: SplineConfigObj
 testLocalParse = read localParseTest
 
--- readSplineConfig :: ParsecT String u m SplineConfigObj
--- readSplineConfig = string "SplineConfigObj" >> valueParser <* eof
---     where 
---       valueParser = spaces >> do { char '{';
---                                    n <- splineStep <<
-
-              
-  
+readSplineConfig :: ParsecT String () IO Int
+readSplineConfig = string "SplineConfigObj" >> valueParser 
+    where 
+      spaceString s = spaces >> string s >> spaces
+      spaceEq = spaces >> char '=' >> spaces
+      myString = between (symbol "\"" ) (symbol "\"")
+      fieldValue s = spaceString s >> spaceEq 
+      valueParser = spaces >> do { char '{';
+                                   step <- spaceString "splineStep" >> spaceEq >> many digit >>= return.read;
+                                   title <- char ','>> spaceString "splineTitle" >> spaceEq >> myString;
+                                   return step;
+                                 };
+                                   
   
 
 instance FromJSON SplineConfigObj where 
