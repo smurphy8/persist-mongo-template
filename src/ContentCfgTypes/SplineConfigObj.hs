@@ -10,6 +10,8 @@ import ContentCfgTypes.Util
 import Text.Parsec
 import Text.Parsec.Prim
 import Text.Parsec.String
+import Text.Parsec.Language
+import qualified Text.Parsec.Token as P 
 data SplineConfigObj =  SplineConfigObj { 
      splineStep :: Int
      ,splineTitle :: Text
@@ -27,6 +29,11 @@ data SplineConfigObj =  SplineConfigObj {
 
 
 
+
+lexer = P.makeTokenParser emptyDef
+
+stringLiteral = P.stringLiteral lexer
+
 localParseTest = "SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\", splineSecondYAxisList = \"\"}"
 
 testLocalParse :: SplineConfigObj
@@ -37,7 +44,7 @@ readSplineConfig = string "SplineConfigObj" >> valueParser
     where 
       spaceString s = spaces >> string s >> spaces
       spaceEq = spaces >> char '=' >> spaces
-      myString = between (symbol "\"" ) (symbol "\"")
+      myString = stringLiteral
       fieldValue s = spaceString s >> spaceEq 
       valueParser = spaces >> do { char '{';
                                    step <- spaceString "splineStep" >> spaceEq >> many digit >>= return.read;
