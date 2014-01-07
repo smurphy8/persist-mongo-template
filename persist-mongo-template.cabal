@@ -25,9 +25,9 @@ Library
                         ContentCfgTypes.StatusConfigObj
                         ContentCfgTypes.ParameterHistoryConfigObj
                         ContentCfgTypes.MultiParameterHistoryConfigObj
+                        ContentCfgTypes.MultiParameterHistoryReportConfigObj
                         ContentCfgTypes.TableByMultiLocConfigObj                        
                         ContentCfgTypes.TableByLocConfigObj
-
                         WidgetTypes
 
   Other-Modules:        Persist.Mongo.Settings.Internal

@@ -28,6 +28,7 @@ import ContentCfgTypes.ParameterHistoryConfigObj as ContentCfgTypes
 import ContentCfgTypes.MultiParameterHistoryConfigObj as ContentCfgTypes
 import ContentCfgTypes.TableByMultiLocConfigObj as ContentCfgTypes
 import ContentCfgTypes.TableByLocConfigObj as ContentCfgTypes
+import ContentCfgTypes.MultiParameterHistoryReportConfigObj as ContentCfgTypes
 --import Yesod
 
 {-| Content Types are the configuration object and helpers for them 
