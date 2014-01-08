@@ -43,6 +43,7 @@ Library
                        ,time
                        ,old-locale
                        ,mongoDB
+                       ,yaml                     >= 0.8.5.2
 -- Going to try specifically leaving versions off for template style builds 
 
                        ,aeson
@@ -67,6 +68,7 @@ Test-Suite spec
   Build-Depends:        base
                       , persist-mongo-template
                       , hspec
+                      , yaml
 
 
 Executable persist-mongo-template
