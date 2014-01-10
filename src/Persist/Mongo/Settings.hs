@@ -15,20 +15,7 @@ module Persist.Mongo.Settings where
 
 import Persist.Mongo.Lens
 import Yesod hiding (runDB)
--- import Data.Text (Text)
--- import Database.Persist.Quasi
--- import Data.Aeson (withText,(.:?),(.!=))
--- import Control.Applicative ((<$>),(<*>),pure)
--- import Yesod.Auth.HashDB (HashDBUser(..))
--- import Data.Time
 import GHC.Generics
--- import Database.Persist.MongoDB hiding (master)
--- import WidgetTypes
--- import Permissions
--- import ContentCfgTypes
--- import Language.Haskell.TH.Syntax
-
--- import Data.Typeable (Typeable)
 
 import Yesod.Core (MonadIO,MonadBaseControl)
 import Data.Text (Text, pack)
