@@ -1,5 +1,5 @@
 Name:                   persist-mongo-template
-Version:                0.0.2
+Version:                0.0.3
 Author:                 Scott Murphy<scottmurphy09@gmail.com>
 Maintainer:             Scott Murphy<scottmurphy09@gmail.com>
 License:                BSD3
@@ -37,6 +37,7 @@ Library
                        ,text                     >= 0.11.3.1  &&   < 0.11.3.3
                        ,transformers             >= 0.3.0.0
                        ,lens                     >= 3.2       &&   < 3.9
+                       ,aeson                    >= 0.7.0
                        ,parsec
                        ,containers
                        ,bytestring

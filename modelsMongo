@@ -2,8 +2,8 @@ User
     ident Text
     password Text Maybe
     UniqueUser ident
-   
-    
+    deriving Generic   
+    deriving Typeable    
 
 Email
     email Text

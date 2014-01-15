@@ -9,10 +9,12 @@
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 
 module Persist.Mongo.Settings where
 
-
+import Data.Typeable (Typeable)
 import Persist.Mongo.Lens
 import Yesod hiding (runDB)
 -- import Data.Text (Text)

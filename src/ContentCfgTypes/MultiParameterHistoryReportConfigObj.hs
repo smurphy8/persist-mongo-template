@@ -1,6 +1,7 @@
-{-# LANGUAGE TupleSections, OverloadedStrings, QuasiQuotes, TemplateHaskell, TypeFamilies, RecordWildCards,DeriveGeneric, MultiParamTypeClasses, FlexibleInstances  #-}
+{-# LANGUAGE TupleSections, OverloadedStrings, QuasiQuotes, TemplateHaskell, TypeFamilies, RecordWildCards,DeriveGeneric, MultiParamTypeClasses, FlexibleInstances,DeriveGeneric,DeriveDataTypeable  #-}
 module ContentCfgTypes.MultiParameterHistoryReportConfigObj where
-
+import GHC.Generics
+import Data.Typeable (Typeable)
 import Prelude hiding (head, init, last
                       ,readFile, tail, writeFile)
 
@@ -26,7 +27,7 @@ data MultiParameterHistoryReportConfigObj =  MultiParameterHistoryReportConfigOb
      ,rhistoryPIDList :: Text
      ,rhistoryTitle :: Text
     }
-   deriving (Read, Show, Eq)
+   deriving (Read, Show, Eq,Generic,Typeable)
 
 instance FromJSON MultiParameterHistoryReportConfigObj where 
     parseJSON (Object tObj) = MultiParameterHistoryReportConfigObj <$> 
