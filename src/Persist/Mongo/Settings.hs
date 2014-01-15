@@ -6,6 +6,7 @@
 {-# LANGUAGE TemplateHaskell   #-}
 {-# LANGUAGE TypeFamilies      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE RankNTypes #-}
@@ -65,7 +66,7 @@ data MongoDBConf =  MongoDBConf {
     ,db   :: Text
     ,port :: Int
     }
-   deriving (Read, Show,Eq)
+   deriving (Read, Show,Eq,Typeable)
 instance FromJSON MongoDBConf where
     parseJSON (Object tObj) = MongoDBConf <$>
                           tObj .: "host" <*>
@@ -74,7 +75,12 @@ instance FromJSON MongoDBConf where
 
     parseJSON _ = fail "Rule: Expecting MongoDB Config Object Received, Other"
 
-
+instance ToJSON MongoDBConf where
+    toJSON (MongoDBConf {..} ) = object [
+                 "host" .= host,
+                 "db"   .= db,
+                 "port" .= port]                 
+                 
 
 
 share [mkPersist (mkPersistSettings (ConT ''MongoBackend)) { mpsGeneric = False }, mkMigrate "migrateAll"]
