@@ -74,64 +74,104 @@ spline_lexer :: P.GenTokenParser String u Identity
 spline_lexer = P.makeTokenParser def 
 
 
+lexeme :: ParsecT String u Identity a -> ParsecT String u Identity a
 lexeme = P.lexeme spline_lexer
+
+reserved :: String -> ParsecT String u Identity ()
 reserved = P.reserved spline_lexer
+
+reservedOp :: String -> ParsecT String u Identity ()
 reservedOp = P.reservedOp spline_lexer
 
+lParens :: ParsecT String u Identity a -> ParsecT String u Identity a 
 lParens = P.parens spline_lexer
 
 integer :: ParsecT String u Identity Int
 integer = P.integer spline_lexer >>= return.fromIntegral
 
+
+text :: ParsecT String u Identity Text
 text = (P.stringLiteral spline_lexer) >>= return.pack 
 
+
+braces :: ParsecT String u Identity a -> ParsecT String u Identity a
 braces = (P.braces spline_lexer) 
 
+
+comma ::  ParsecT String u Identity String
 comma = P.comma spline_lexer
 
+
+parseSplineStep :: ParsecT String u Identity Int
 parseSplineStep = do  { reserved "splineStep";   reservedOp "=" ;  integer }
+
+parserSplineTitle :: ParsecT String u Identity Text
 parserSplineTitle           =     do { reserved  "splineTitle"           ;  reservedOp  "="; text }
+
+parserSplineParamIds :: ParsecT String u Identity Text
 parserSplineParamIds        =     do { reserved  "splineParamIds"        ;  reservedOp  "="; text }
+
+parserSplineTime :: ParsecT String u Identity Int
 parserSplineTime            =     do { reserved  "splineTime"            ;  reservedOp  "="; integer }
+
+
+parserSplineTimeUnit :: ParsecT String u Identity Text
 parserSplineTimeUnit        =     do { reserved  "splineTimeUnit"        ;  reservedOp  "="; text }
+
+parserSplineEndDate :: ParsecT String u Identity Text
 parserSplineEndDate         =     do { reserved  "splineEndDate"         ;  reservedOp  "="; text }
+
+parserSplineLegend  :: ParsecT String u Identity Int
 parserSplineLegend          =     do { reserved  "splineLegend"          ;  reservedOp  "="; integer  }
+
+parserSplineDescriptionList :: ParsecT String u Identity Text
 parserSplineDescriptionList =     do { reserved  "splineDescriptionList" ;  reservedOp  "="; text }
+
+parserSplineLocationList :: ParsecT String u Identity Text
 parserSplineLocationList    =     do { reserved  "splineLocationList"    ;  reservedOp  "="; text }
+
+parserSplineGraphList :: ParsecT String u Identity Text
 parserSplineGraphList       =     do { reserved  "splineGraphList"       ;  reservedOp  "="; text }
+
+parserSplineSecondYAxisList :: ParsecT String u Identity Text
 parserSplineSecondYAxisList = do { 
-                                comma;     
+                                _ <- comma;     
                                 reserved  "splineSecondYAxisList" ;  reservedOp  "="; text }
                               <|> return ""
 
 
+
+lexSplineConfigObj :: ParsecT String u Identity SplineConfigObj
 lexSplineConfigObj = spaces>>parenthesizedSplineConfigObj
 
 
+
+parenthesizedSplineConfigObj :: ParsecT String u Identity SplineConfigObj
 parenthesizedSplineConfigObj = do {lParens parenthesizedSplineConfigObj;}
                                <|> parserSplineConfigObj
 
+parserSplineConfigObj :: ParsecT String u Identity SplineConfigObj
 parserSplineConfigObj = do  { 
                           reserved "SplineConfigObj" ; 
                           braces innerSplineObj;
                             }
     where innerSplineObj = do 
-            v0 <- parseSplineStep;                   comma;                              
-            v1 <- parserSplineTitle;                 comma;                   
-            v2 <- parserSplineParamIds;              comma;                   
-            v3 <- parserSplineTime;                  comma;                   
-            v4 <- parserSplineTimeUnit;              comma;                   
-            v5 <- parserSplineEndDate;               comma;                   
-            v6 <- parserSplineLegend;                comma;                   
-            v7 <- parserSplineDescriptionList;       comma;                   
-            v8 <- parserSplineLocationList;          comma;                   
+            v0 <- parseSplineStep;                 _ <-  comma;                              
+            v1 <- parserSplineTitle;               _ <-  comma;                   
+            v2 <- parserSplineParamIds;            _ <-  comma;                   
+            v3 <- parserSplineTime;                _ <-  comma;                   
+            v4 <- parserSplineTimeUnit;            _ <-  comma;                   
+            v5 <- parserSplineEndDate;             _ <-  comma;                   
+            v6 <- parserSplineLegend;              _ <-  comma;                   
+            v7 <- parserSplineDescriptionList;     _ <-  comma;                   
+            v8 <- parserSplineLocationList;        _ <-  comma;                   
             v9 <- parserSplineGraphList;                         
             v10 <- parserSplineSecondYAxisList;                                    
             return $ SplineConfigObj v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 (v10)
 
   
 
-
+localParseTest :: String
 localParseTest = "  (((SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\"})))"
 testLocalParse :: SplineConfigObj
 testLocalParse = read localParseTest
