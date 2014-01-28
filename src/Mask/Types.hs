@@ -2,6 +2,7 @@
 {-# LANGUAGE CPP, DeriveDataTypeable, FlexibleContexts,
   GeneralizedNewtypeDeriving, MultiParamTypeClasses,DeriveGeneric,
   TemplateHaskell, TypeFamilies, RecordWildCards #-}
+
 module Mask.Types where 
 
 import Prelude hiding (head, init, last

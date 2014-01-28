@@ -1,19 +1,19 @@
-{-# LANGUAGE TupleSections, OverloadedStrings, QuasiQuotes, TemplateHaskell, TypeFamilies, RecordWildCards,DeriveGeneric, MultiParamTypeClasses, FlexibleInstances  #-}
+{-# LANGUAGE TupleSections, OverloadedStrings, QuasiQuotes, TemplateHaskell, TypeFamilies, RecordWildCards,DeriveGeneric, MultiParamTypeClasses, FlexibleInstances,FlexibleContexts  #-}
 module ContentCfgTypes.SplineConfigObj where
 
 import Prelude hiding (head, init, last
                       ,readFile, tail, writeFile)
-import Control.Applicative ((<$>), (<*>),(<*))
+import Control.Applicative ((<$>), (<*>))
 import Yesod
 import Data.Text
-import Data.Maybe
+-- import Data.Maybe
 import Data.Functor.Identity
 import ContentCfgTypes.Util
 import Debug.Trace
-import Text.Read
+-- import Text.Read
 import Text.Parsec
-import Text.Parsec.Prim
-import Text.Parsec.String
+-- import Text.Parsec.Prim
+-- import Text.Parsec.String
 import Text.Parsec.Language
 import qualified Text.Parsec.Token as P 
 
@@ -32,9 +32,16 @@ data SplineConfigObj =  SplineConfigObj {
     }
    deriving (Show,Eq)
 -- withRemaining :: Parser a -> Parser (a, String)
+
+withRemaining :: Monad m =>
+                       ParsecT a u m a1 -> ParsecT a u m (a1, a)
 withRemaining p = (,) <$> p <*> getInput
 
-parsecToReadsPrec parsecParser prec input
+
+parsecToReadsPrec :: Stream s Identity t1 =>
+                           ParsecT s () Identity a -> t -> s -> [(a, s)]
+
+parsecToReadsPrec parsecParser _ input
     = case parse (withRemaining $ parsecParser) "" input of
         Left s -> traceShow s []
         Right result -> [result]
@@ -43,6 +50,7 @@ parsecToReadsPrec parsecParser prec input
 instance Read SplineConfigObj where
     readsPrec d r = splineConfigObjReads d r
 
+splineConfigObjReads :: t ->  String -> [(SplineConfigObj, String)]
 splineConfigObjReads = parsecToReadsPrec lexSplineConfigObj --parserSplineConfigObj 
                        
 

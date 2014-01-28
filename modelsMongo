@@ -248,3 +248,39 @@ ReportRow
 AutoReport
     arData [ReportRow]
     
+
+
+-- ==================================================
+-- Mask Types 
+-- ==================================================
+
+MaskScript 
+  content Text
+
+MaskTypeJoin
+   value MaskDataStore		
+   mID  MaskTypeId Maybe
+   pKey Int
+   defaultSelect Bool
+   deriving Generic 
+   
+
+-- the 'Store suffix indicates a bytestring encoded with 
+-- So MaskDataStore means the ByteString Stores MaskData
+-- Data.SafeCopy
+
+MaskDataStore 
+   value ByteString
+   deriving Generic
+
+MaskType 
+  name  Text
+  tagNames  [Text]
+  inputValues [Int]
+  value MaskDataStore
+  script MaskScriptId 
+  UniqueMaskType script
+  deriving Generic
+
+
+-- ==================================================

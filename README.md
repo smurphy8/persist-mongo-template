@@ -23,7 +23,8 @@ TODO: Write installation instructions here
 
 ## Usage
 
-TODO: Write usage instructions here
+Persist Mongo Template is used to run onping functions without the need of the yesod web server.
+This allows distributed database lookups to be ran with the same names that we use on the webserver
 
 ## How to run tests
 

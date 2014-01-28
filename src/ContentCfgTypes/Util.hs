@@ -7,7 +7,7 @@ import Prelude hiding (head, init, last
 import Yesod 
 --import Text.Julius
 import qualified WidgetTypes as W
-import qualified Database.MongoDB as MDB
+-- import qualified Database.MongoDB as MDB
 import Data.Aeson.Types
 import System.Locale
 import Data.Time

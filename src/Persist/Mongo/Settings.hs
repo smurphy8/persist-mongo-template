@@ -33,18 +33,19 @@ import GHC.Generics
 
 -- import Data.Typeable (Typeable)
 
-import Yesod.Core (MonadIO,MonadBaseControl)
-import Data.Text (Text, pack, unpack)
-import Database.Persist 
+-- import Yesod.Core (MonadIO,MonadBaseControl)
+import Data.Text (Text,unpack)
+-- import Database.Persist 
 import Database.Persist.MongoDB
 import Database.Persist.Quasi (lowerCaseSettings)
 import Network (PortID (PortNumber))
-import Control.Lens.Lens
-import Database.Persist.TH
+-- import Control.Lens.Lens
+-- import Database.Persist.TH
 import Language.Haskell.TH.Syntax
 import Data.Time
+import Data.ByteString hiding (unpack)
 import qualified  Data.Yaml as Y
-import qualified Data.Aeson as A
+-- import qualified Data.Aeson as A
 import qualified Data.ByteString as BS
 import Control.Applicative  ((<$>),(<*>))
 
