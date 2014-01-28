@@ -5,16 +5,17 @@ User
     deriving Generic   
     deriving Typeable    
 
+
 Email
     email Text
     user UserId Maybe
     verkey Text Maybe
     UniqueEmail email
 
- -- By default this file is used in Model.hs (which is imported by Foundation.hs)
-
+-- By default this file is used in Model.hs (which is imported by Foundation.hs)
 -- Because the auth structure requires a special user thing I just have made a new user tag
 -- I don't think it will be a problem but we will see
+
 
 UserTag
   user UserId       -- user id of THIS user
@@ -44,14 +45,9 @@ Dashboard
   header HeaderWidget Maybe 
   panels [MenuPanel] Maybe
 
- 
-
-
-
 -- Sub Object is my workaround for adding pieces to a panel
 SubObject
  panels [MenuPanel]
-
 
 ContentObj
  icon Text
@@ -62,11 +58,8 @@ ContentObj
  minState Bool Maybe
  editState Bool Maybe
 
-
-
 ContentArray 
  arr [ContentObj]
-
 
 MenuPanel
   bidx BranchIndex 
@@ -84,12 +77,6 @@ ContentArrayJoin
  panel MenuPanelId
  content ContentArrayId
 
-
-
-
-
-
-
 -- =======================================================================
 Group
     owner UserId    -- who made this group
@@ -101,7 +88,6 @@ Group
     deriving Read
     deriving Show
     deriving Eq		
-
 
 GroupUserJoin
     gId   GroupId 
@@ -148,9 +134,6 @@ OnpingTagCombined
   location		    Location Maybe
   pid			    Int Maybe
 
-
-
-
 -- LocationTableWidget
 --   pidlist [Text]
 --   descriptionlist [Text]
@@ -170,9 +153,6 @@ ParameterHistory
   endDate   UTCTime Maybe
   locationId Int Maybe
   slave_parameter_id Int Maybe
-  
-  
-  
 
 -- Smaller collection for testing MongoDB ideas
 TestCollection
