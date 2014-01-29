@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude,OverloadedStrings #-}
 module Main where
 import Persist.Mongo.Settings
-import Prelude (print,($),(.), (()), IO )
+import Prelude (print,($),(.), IO )
 import Database.Persist
 -- import Database.Persist.Class
 
