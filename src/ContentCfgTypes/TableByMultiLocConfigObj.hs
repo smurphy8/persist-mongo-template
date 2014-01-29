@@ -3,10 +3,10 @@ module ContentCfgTypes.TableByMultiLocConfigObj where
 
 import Prelude hiding (head, init, last
                       ,readFile, tail, writeFile)
-import qualified Data.ByteString as BS
-import Control.Applicative ((<$>), (<*>))
+-- import qualified Data.ByteString as BS
+import Control.Applicative ((<$>))
 import Yesod 
-import Data.Aeson.Types
+-- import Data.Aeson.Types
 import Data.Text
 import ContentCfgTypes.Util
 

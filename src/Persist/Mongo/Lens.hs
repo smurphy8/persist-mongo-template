@@ -9,14 +9,14 @@ module Persist.Mongo.Lens where
 
 
 import Control.Lens
-import Control.Lens.Lens
-import Control.Lens.Prism
-import Control.Lens.TH
+-- import Control.Lens.Lens
+-- import Control.Lens.Prism
+-- import Control.Lens.TH
 import Language.Haskell.TH
-import Language.Haskell.TH.Syntax
+-- import Language.Haskell.TH.Syntax
 import qualified Data.Set as Set
-import qualified Data.Foldable as F
-import ContentCfgTypes
+-- import qualified Data.Foldable as F
+-- import ContentCfgTypes
 import Data.Char (toLower,toUpper)
 
 

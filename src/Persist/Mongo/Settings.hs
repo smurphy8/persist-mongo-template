@@ -6,27 +6,35 @@
 {-# LANGUAGE TemplateHaskell   #-}
 {-# LANGUAGE TypeFamilies      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 
 module Persist.Mongo.Settings where
 
-
+import Data.Typeable (Typeable)
 import Persist.Mongo.Lens
 import Yesod hiding (runDB)
 import GHC.Generics
 
-import Yesod.Core (MonadIO,MonadBaseControl)
-import Data.Text (Text, pack)
-import Database.Persist 
+-- import Yesod.Core (MonadIO,MonadBaseControl)
+import Data.Text (Text,unpack)
+-- import Database.Persist 
 import Database.Persist.MongoDB
 import Database.Persist.Quasi (lowerCaseSettings)
 import Network (PortID (PortNumber))
-import Control.Lens.Lens
-import Database.Persist.TH
+-- import Control.Lens.Lens
+-- import Database.Persist.TH
 import Language.Haskell.TH.Syntax
 import Data.Time
+import Data.ByteString hiding (unpack)
+import qualified  Data.Yaml as Y
+-- import qualified Data.Aeson as A
+import qualified Data.ByteString as BS
+import Control.Applicative  ((<$>),(<*>))
 
 import ContentCfgTypes
 import WidgetTypes
@@ -40,8 +48,32 @@ import WidgetTypes
 --   deriving Show Eq Read 
 -- |]
 
+
+data MongoDBConf =  MongoDBConf {
+     host :: Text
+    ,db   :: Text
+    ,port :: Int
+    }
+   deriving (Read, Show,Eq,Typeable)
+instance FromJSON MongoDBConf where
+    parseJSON (Object tObj) = MongoDBConf <$>
+                          tObj .: "host" <*>
+                          tObj .: "db" <*>
+                          tObj .: "port"
+
+    parseJSON _ = fail "Rule: Expecting MongoDB Config Object Received, Other"
+
+instance ToJSON MongoDBConf where
+    toJSON (MongoDBConf {..} ) = object [
+                 "host" .= host,
+                 "db"   .= db,
+                 "port" .= port]                 
+                 
+
+
 share [mkPersist (mkPersistSettings (ConT ''MongoBackend)) { mpsGeneric = False }, mkMigrate "migrateAll"]
     $(persistFileWith lowerCaseSettings "modelsMongo")
+
 
 
 
@@ -55,6 +87,16 @@ runDB :: forall (m :: * -> *) b.(MonadIO m ,MonadBaseControl IO m) =>
 runDB a = withMongoDBConn "onping_production" "localhost" (PortNumber 27017) Nothing 2000 $ \pool -> do 
   (runMongoDBPool master a )  pool
 
+
+runDBConf :: forall (m :: * -> *) b.(MonadIO m ,MonadBaseControl IO m) =>
+               MongoDBConf -> Action m b -> m b
+runDBConf (MongoDBConf host db port) a = withMongoDBConn db (unpack host) (PortNumber $ fromIntegral port) Nothing 2000 $ \pool -> do 
+  (runMongoDBPool master a )  pool
+
+readDBConf :: FilePath -> IO (Either String MongoDBConf)
+readDBConf fPath = do
+	fCont <- BS.readFile fPath
+	return $ Y.decodeEither $ fCont
 
 
 {-|
@@ -79,6 +121,3 @@ persistMakeClassy ''ContentArray
 persistMakeClassy ''MenuPanel
 
 persistMakeClassy ''Dashboard
-
-
-
