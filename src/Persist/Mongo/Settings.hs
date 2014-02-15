@@ -28,9 +28,9 @@ import Database.Persist.Quasi (lowerCaseSettings)
 import Network (PortID (PortNumber))
 -- import Control.Lens.Lens
 -- import Database.Persist.TH
-import Language.Haskell.TH.Syntax
+import Language.Haskell.TH.Syntax hiding (location)
 import Data.Time
-import Data.ByteString hiding (unpack)
+import Data.ByteString hiding (unpack,group)
 import qualified  Data.Yaml as Y
 -- import qualified Data.Aeson as A
 import qualified Data.ByteString as BS
@@ -72,7 +72,7 @@ instance ToJSON MongoDBConf where
 
 
 share [mkPersist (mkPersistSettings (ConT ''MongoBackend)) { mpsGeneric = False }, mkMigrate "migrateAll"]
-    $(persistFileWith lowerCaseSettings "modelsMongo")
+          $(persistFileWith lowerCaseSettings "modelsMongo")
 
 
 
@@ -121,3 +121,36 @@ persistMakeClassy ''ContentArray
 persistMakeClassy ''MenuPanel
 
 persistMakeClassy ''Dashboard
+
+persistMakeClassy ''SubObject
+persistMakeClassy ''SubMenuJoin
+persistMakeClassy ''ContentArrayJoin
+persistMakeClassy ''OnpingAlarmCombined
+persistMakeClassy ''OnpingTagCombined
+persistMakeClassy ''OnpingTagHistory
+persistMakeClassy ''ParameterHistory
+persistMakeClassy ''TestCollection
+persistMakeClassy ''Company
+
+persistMakeClassy ''Site
+
+persistMakeClassy ''Location 
+persistMakeClassy ''Robot
+
+persistMakeClassy ''Unit 
+persistMakeClassy ''LocationTableWidget
+persistMakeClassy ''MultiLocationTableWidget
+persistMakeClassy ''PDFTableWidget
+persistMakeClassy ''CalendarWidget
+persistMakeClassy ''Prospective 
+persistMakeClassy ''ReportRow 
+persistMakeClassy ''AutoReport
+persistMakeClassy ''MaskScript 
+persistMakeClassy ''MaskTypeJoin
+persistMakeClassy ''MaskDataStore 
+persistMakeClassy ''MaskType 
+persistMakeClassy ''TableByMultiLocConfigObj
+persistMakeClassy ''TableByLocConfigObj 
+persistMakeClassy ''CustomTableConfigObj
+persistMakeClassy ''CustomTableIdConfigObj
+persistMakeClassy ''RollingReportConfigIdObj

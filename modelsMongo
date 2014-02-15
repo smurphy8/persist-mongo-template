@@ -250,6 +250,27 @@ AutoReport
     
 
 
+RollingReportConfig
+  title Text
+  runevery Int
+  entries [RollingReportConfigEntry]
+  dashboard DashboardId Maybe default = Nothing
+  deriving Generic
+
+RollingReportConfigEntry
+  title Text
+  pids [[RollingReportPid]]
+  daysback [Int]
+  deriving Generic
+
+RollingReportPid
+  pid Int
+  description Text
+  location Text
+  deriving Generic
+
+
+
 -- ==================================================
 -- Mask Types 
 -- ==================================================
@@ -284,3 +305,4 @@ MaskType
 
 
 -- ==================================================
+

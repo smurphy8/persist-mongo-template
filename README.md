@@ -26,6 +26,13 @@ TODO: Write installation instructions here
 Persist Mongo Template is used to run onping functions without the need of the yesod web server.
 This allows distributed database lookups to be ran with the same names that we use on the webserver
 
+## Note!!!
+Please be careful, *no entities should be created with the Persist Mongo Template* they are designed for passing around existing
+entities and should be treated accordingly.
+Unless you are absolutely certain you know what you are doing (and are not named Scott Murphy) you should only update records or read them.  Never replace or insert them with the mongo-template.
+
+A possible exception is for tests, but be very certain you clean up your mess
+
 ## How to run tests
 
 ```

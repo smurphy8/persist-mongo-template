@@ -10,7 +10,7 @@ import Control.Applicative ((<$>), (<*>),(<|>))
 import Yesod 
 --import Text.Julius
 import qualified Data.Aeson as A
-
+import qualified Data.HashMap.Strict as H
 
 import Data.Text
 
@@ -25,10 +25,13 @@ import ContentCfgTypes.AngularGaugeConfigObj as ContentCfgTypes
 import ContentCfgTypes.AutoReportConfigObj as ContentCfgTypes 
 import ContentCfgTypes.StatusConfigObj as ContentCfgTypes
 import ContentCfgTypes.ParameterHistoryConfigObj as ContentCfgTypes
+import ContentCfgTypes.MultiParameterHistoryReportConfigObj as ContentCfgTypes
 import ContentCfgTypes.MultiParameterHistoryConfigObj as ContentCfgTypes
 import ContentCfgTypes.TableByMultiLocConfigObj as ContentCfgTypes
 import ContentCfgTypes.TableByLocConfigObj as ContentCfgTypes
-import ContentCfgTypes.MultiParameterHistoryReportConfigObj as ContentCfgTypes
+import ContentCfgTypes.CustomTableConfigObj as ContentCfgTypes
+import ContentCfgTypes.CustomTableIdConfigObj as ContentCfgTypes
+import ContentCfgTypes.RollingReportConfigIdObj as ContentCfgTypes
 --import Yesod
 
 {-| Content Types are the configuration object and helpers for them 
@@ -45,23 +48,35 @@ import ContentCfgTypes.MultiParameterHistoryReportConfigObj as ContentCfgTypes
 type MaybeConfig a = Maybe (A.Result a)
 
 
-
-
-data ContentConfig = AutoReportConfig !AutoReportConfigObj 
+data ContentConfig = AutoReportConfig NullConfigObj
                    | TankGaugeConfig !TankGaugeConfigObj
                    | SplineConfig !SplineConfigObj
                    | AngularGaugeConfig !AngularGaugeConfigObj
                    | StatusConfig !StatusConfigObj
                    | EditMode !EditModeObj
                    | TableByMultiLocConfig !TableByMultiLocConfigObj
-                   | TableByLocConfig !TableByMultiLocConfigObj
+                   | TableByLocConfig !TableByLocConfigObj
+                   | AutoTableByLocationConfig NullConfigObj
+                   | CustomTableConfig !CustomTableConfigObj
+                   | CustomTableIdConfig !CustomTableIdConfigObj
+                   | RollingReportIdConfig !RollingReportConfigIdObj
                      deriving (Read,Show,Eq,Generic) 
 
 
 
 
 
+data NullConfigObj = NullConfigObj
+  deriving (Read,Show,Eq)
 
+instance FromJSON NullConfigObj where
+  parseJSON (Object tObj)
+   |H.null tObj = return NullConfigObj
+   |otherwise = fail "Expected empty Object"
+  parseJSON _ = fail "Expected empty Object recieved other"
+
+instance ToJSON NullConfigObj where 
+  toJSON NullConfigObj = A.Object H.empty 
 
 
 
@@ -70,8 +85,6 @@ data ContentConfig = AutoReportConfig !AutoReportConfigObj
 
 
 
-arcObj :: AutoReportConfigObj -> ContentConfig 
-arcObj x = AutoReportConfig x
 
 instance FromJSON ContentConfig where
      parseJSON  (Object o) = do 
@@ -83,6 +96,10 @@ instance FromJSON ContentConfig where
        <|> ((o .: "EditMode") >>= (\x -> return $ (EditMode x)))
        <|> ((o .: "TableByMultiLocConfig") >>= (\x -> return $ (TableByMultiLocConfig x)))
        <|> ((o .: "TableByLocConfig") >>= (\x -> return $ (TableByLocConfig x)))
+       <|> ((o .: "AutoTableByLocationConfig") >>= (\x -> return $ AutoTableByLocationConfig x))
+       <|> ((o .: "CustomTableConfig") >>= (\x -> return $ CustomTableConfig x))
+       <|> ((o .: "CustomTableIdConfig") >>= (\x -> return $ CustomTableIdConfig x))
+       <|> ((o .: "RollingReportIdConfig") >>= (\x -> return $ RollingReportIdConfig x))
        <|> fail "Could not parse ContentConfig"
      parseJSON (Array  _) = fail "Whoops it was a: Array"
      parseJSON (String _) = fail "Whoops it was a: String"
@@ -99,8 +116,11 @@ instance ToJSON ContentConfig where
     toJSON (StatusConfig           x) = object [ ("StatusConfig"              .= x)] 
     toJSON (EditMode               x) = object [ ("EditMode"                  .= x)] 
     toJSON (TableByMultiLocConfig  x) = object [ ("TableByMultiLocConfig"     .= x)] 
-    toJSON (TableByLocConfig       x) = object [ ("TableByLocConfig"          .= x)] 
-
+    toJSON (TableByLocConfig       x) = object [ ("TableByLocConfig"          .= x)]
+    toJSON (AutoTableByLocationConfig x)  = object [ ("AutoTableByLocationConfig" .= x)]
+    toJSON (CustomTableConfig      x) = object [ ("CustomTableConfig"         .= x)]
+    toJSON (CustomTableIdConfig x) = object [ ("CustomTableIdConfig"          .= x)]
+    toJSON (RollingReportIdConfig x) = object [ ("RollingReportIdConfig"          .= x)]
 
 
 -- | EditMode is a special config object that is available in any widget to be picked up
@@ -186,21 +206,3 @@ exTransformObj (t,v)
   | t == "title" = (t .= textVal v)
   | otherwise = (t .= toJSON v)
 
-parseTest :: String 
-parseTest = "SplineConfig (SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\", splineSecondYAxisList = \"\"})"
-
-altParseTest :: String
-altParseTest = "SplineConfig (SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\"})"
-
-unlocalParseTest :: String
-unlocalParseTest = "(((SplineConfigObj {splineStep = 600, splineTitle = \"Enter Title Here\", splineParamIds = \"299,300,\", splineTime = 3, splineTimeUnit = \"hour\", splineEndDate = \"\", splineLegend = 1, splineDescriptionList = \"Pufin Well -- 2 - Modif Channel 1 Reading ,Pufin Well -- 3 - Modif Channel 2 Reading ,\", splineLocationList = \"6,6,\", splineGraphList = \"line,line,\"})))"
- 
-
-altSplineConfigText :: SplineConfigObj 
-altSplineConfigText = read unlocalParseTest
-
-contentConfigTest :: ContentConfig
-contentConfigTest = read parseTest
-
-altContentConfigTest :: ContentConfig
-altContentConfigTest = read altParseTest
