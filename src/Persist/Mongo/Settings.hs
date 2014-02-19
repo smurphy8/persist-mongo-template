@@ -63,12 +63,13 @@ instance FromJSON MongoDBConf where
 
     parseJSON _ = fail "Rule: Expecting MongoDB Config Object Received, Other"
 
+
+
 instance ToJSON MongoDBConf where
     toJSON (MongoDBConf {..} ) = object [
                  "host" .= host,
                  "db"   .= db,
                  "port" .= port]                 
-                 
 
 
 share [mkPersist (mkPersistSettings (ConT ''MongoBackend)) { mpsGeneric = False }, mkMigrate "migrateAll"]
@@ -97,6 +98,27 @@ readDBConf :: FilePath -> IO (Either String MongoDBConf)
 readDBConf fPath = do
 	fCont <- BS.readFile fPath
 	return $ Y.decodeEither $ fCont
+
+
+
+instance ToJSON RollingReportConfig where
+instance FromJSON RollingReportConfig where
+
+instance ToJSON RollingReportConfigEntry where
+instance FromJSON RollingReportConfigEntry  where
+
+instance ToJSON RollingReportPid where
+instance FromJSON RollingReportPid  where
+
+
+
+instance ToJSON OnpingTagHistory where 
+    toJSON (OnpingTagHistory {..}) = object 
+                                      [
+                                        "pid"	              .= onpingTagHistoryPid			 
+                                      , "time"	              .= onpingTagHistoryTime			 
+                                      , "val"	              .= onpingTagHistoryVal                     
+                                      ]
 
 
 {-|
