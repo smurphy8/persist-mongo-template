@@ -92,7 +92,7 @@ runDB a = withMongoDBConn "onping_production" "localhost" (PortNumber 27017) Not
 runDBConf :: forall (m :: * -> *) b.(MonadIO m ,MonadBaseControl IO m) =>
                MongoDBConf -> Action m b -> m b
 runDBConf (MongoDBConf host db port) a = withMongoDBConn db (unpack host) (PortNumber $ fromIntegral port) Nothing 2000 $ \pool -> do 
-  (runMongoDBPool master a )  pool
+  (runMongoDBPool slaveOk a )  pool
 
 readDBConf :: FilePath -> IO (Either String MongoDBConf)
 readDBConf fPath = do
@@ -109,8 +109,6 @@ instance FromJSON RollingReportConfigEntry  where
 
 instance ToJSON RollingReportPid where
 instance FromJSON RollingReportPid  where
-
-
 
 instance ToJSON OnpingTagHistory where 
     toJSON (OnpingTagHistory {..}) = object 
