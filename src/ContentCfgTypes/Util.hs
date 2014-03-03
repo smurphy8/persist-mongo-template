@@ -1,11 +1,11 @@
 {-# LANGUAGE TupleSections, OverloadedStrings, QuasiQuotes, TemplateHaskell, TypeFamilies, RecordWildCards,DeriveGeneric, MultiParamTypeClasses, FlexibleInstances  #-}
 module ContentCfgTypes.Util where
 import Prelude hiding (head, init, last
-                      ,readFile, tail, writeFile)
+                      ,readFile, tail, writeFile , map, zipWith)
 
 
 import Yesod 
---import Text.Julius
+import Control.Applicative ((<$>), (<*>))
 import qualified WidgetTypes as W
 -- import qualified Database.MongoDB as MDB
 import Data.Aeson.Types
@@ -67,6 +67,5 @@ text2PersistVal = toJSON . cnvServe.cnv
         cnvServe t = case fromJSON t of
                        (Success l) -> Just l
                        (Error _ ) -> Nothing 
-
 
 

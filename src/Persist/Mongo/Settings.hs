@@ -38,6 +38,7 @@ import Control.Applicative  ((<$>),(<*>))
 
 import ContentCfgTypes
 import WidgetTypes
+import Permissions
 -- share [mkPersist (mkPersistSettings (ConT ''MongoBackend)) { mpsGeneric = False }, mkMigrate "migrateAll"][persistLowerCase|
 -- Questionnaire
 --   desc Text Maybe

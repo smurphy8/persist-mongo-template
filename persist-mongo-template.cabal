@@ -1,5 +1,5 @@
 Name:                   persist-mongo-template
-Version:                0.2.3
+Version:                0.2.4
 Author:                 Scott Murphy<scottmurphy09@gmail.com>   
 Maintainer:             Scott Murphy<scottmurphy09@gmail.com>
 License:                BSD3
@@ -19,6 +19,7 @@ Library
                         Mask
                         Mask.Types
                         Mask.BuiltIns
+                        Permissions
                         ContentCfgTypes                        
                         ContentCfgTypes.SplineConfigObj
                         ContentCfgTypes.Util

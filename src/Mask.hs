@@ -137,7 +137,8 @@ data MaskAssignConfig = MaskAssignConfig {
   macMaskTypeId :: Maybe MaskTypeId,
   macKeys       :: [Int],
   macBuiltIn    :: BuiltInId,
-  macDefault    :: Bool
+  macDefault    :: Bool,
+  macName       :: Maybe Text
   }
    deriving (Show,Eq,Generic)
 
@@ -146,19 +147,19 @@ instance ToJSON MaskAssignConfig where
 instance FromJSON MaskAssignConfig where 
 
 maskAssignConfigToMaskTypeJoin :: MaskAssignConfig -> IO (Either Text MaskTypeJoin) 
-maskAssignConfigToMaskTypeJoin (MaskAssignConfig _ [] _ _) = do
+maskAssignConfigToMaskTypeJoin (MaskAssignConfig _ [] _ _ _) = do
   let err :: Text  
       err = "no keys present"
   return.Left $ err  
-maskAssignConfigToMaskTypeJoin (MaskAssignConfig mmtid keys@(primaryKey:_) bid dflt) = do
+maskAssignConfigToMaskTypeJoin (MaskAssignConfig mmtid keys@(primaryKey:_) bid dflt mname) = do
   _ <- resetMTJDefault primaryKey dflt
   case mmtid of
     Nothing -> do
       ey <- (makeBuiltInDataStore keys bid)
-      return $ ey >>= (\y -> return $ MaskTypeJoin y mmtid primaryKey dflt)
+      return $ ey >>= (\y -> return $ MaskTypeJoin y mmtid primaryKey dflt mname)
     (Just mtid) -> do 
       ex <- (makeUserDefDataStore keys mtid) 
-      return $ ex >>= (\x -> return $ MaskTypeJoin x mmtid primaryKey dflt)
+      return $ ex >>= (\x -> return $ MaskTypeJoin x mmtid primaryKey dflt mname)
 
 makeBuiltInDataStore :: [Int] -> BuiltInId -> IO (Either Text MaskDataStore)
 makeBuiltInDataStore keys binId = do

@@ -233,8 +233,16 @@ PDFTableWidget
     pdflist [Text]
     
 
-CalendarWidget
-    calendarid Int
+CalendarWidget 
+    userId UserId
+    titles [Text]
+    days [Int]
+    hours [Int]
+    mins [Int]
+    durations [Int]
+    allday [Bool]
+    deriving Generic
+    UniqueUserId userId
     
 
 Prospective 
@@ -277,10 +285,11 @@ MaskScript
   content Text
 
 MaskTypeJoin
-   value MaskDataStore		
+   value MaskDataStore    
    mID  MaskTypeId Maybe
    pKey Int
    defaultSelect Bool
+   name Text Maybe default = Nothing
    deriving Generic 
    
 
@@ -301,6 +310,40 @@ MaskType
   UniqueMaskType script
   deriving Generic
 
+-- ==================================================
+-- Call Order
+-- ==================================================
+
+CallOrder
+  name  Text
+  userNames [Text]
+  order [UserId]
+  repeatCounts [Int]
+  owner UserId
+  gId GroupId
+  gPermissions UserPermissionsList
+  deriving Generic
+
+-- ==================================================
+-- Alarm Stuff
+-- ==================================================
+
+Alarm 
+ name Text
+ maskId MaskTypeId Maybe
+ value MaskDataStore
+ corderId CallOrderId
+ pids [Int]
+ alarmActive Bool
+ userEnabled Bool
+ customName Bool
+ tripTime Int
+ recallTime Int
+ clearTime Int
+ ownerId UserId
+ gId GroupId
+ gPermissions UserPermissionsList
+ deriving Generic
 
 -- ==================================================
 
