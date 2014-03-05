@@ -50,6 +50,15 @@ import Permissions
 -- |]
 
 
+
+instance ToJSON a => ToJSON (Entity a) where 
+  toJSON = keyValueEntityToJSON 
+
+
+instance FromJSON a => FromJSON (Entity a) where 
+  parseJSON = keyValueEntityFromJSON 
+
+
 data MongoDBConf =  MongoDBConf {
      host :: Text
     ,db   :: Text

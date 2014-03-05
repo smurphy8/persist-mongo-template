@@ -29,6 +29,7 @@ import qualified Data.Set as S
 import qualified Data.List as L
 import Yesod hiding (runDB)
 import qualified Data.Traversable as T
+import Data.Traversable.Compat
 import Data.Text hiding (zip)
 import Data.Text.Read
 
@@ -200,8 +201,9 @@ getMaskFunctionDefault pid = do
       return $ Left err
     (Just mtj) -> do 
       let mds = maskTypeJoinValue.entityVal $ mtj
-          edecodeMDS = maskDataDecode mds      
-      edecodeUM <- T.traverse maskLookup (eStringToEText edecodeMDS)
+          edecodeMDS = maskDataDecode mds
+          decodedMDS = (eStringToEText edecodeMDS) :: Either Text MaskData     
+      edecodeUM <- T.traverse maskLookup decodedMDS 
       return $ maskPullOut <$>  edecodeUM
 
 
