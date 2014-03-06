@@ -29,7 +29,7 @@ import qualified Data.Set as S
 import qualified Data.List as L
 import Yesod hiding (runDB)
 import qualified Data.Traversable as T
-import Data.Traversable.Compat
+-- import Data.Traversable.Compat
 import Data.Text hiding (zip)
 import Data.Text.Read
 

@@ -23,9 +23,8 @@ UserTag
   group GroupId     -- group this user is a part of by default
   superGroup GroupId   -- owner Group
   defaultDash  DashboardId
-  UniqueUserTag user --REMEMBER THIS HAS TO BE PAIRED WITH AN ENSURE INDEX
-  
- 
+  UniqueUserTag user --REMEMBER THIS HAS TO BE PAIRED WITH AN ENSURE INDEX  
+  deriving Generic
   deriving Read
   deriving Show
   deriving Eq
@@ -82,9 +81,9 @@ Group
     owner UserId    -- who made this group
     group GroupId  -- owner group
     name Text
-    description Textarea
+    description Text
     UniqueGroup name
-   
+    deriving Generic
     deriving Read
     deriving Show
     deriving Eq		

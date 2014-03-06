@@ -50,7 +50,6 @@ import Permissions
 -- |]
 
 
-
 instance ToJSON a => ToJSON (Entity a) where 
   toJSON = keyValueEntityToJSON 
 
@@ -89,6 +88,7 @@ share [mkPersist (mkPersistSettings (ConT ''MongoBackend)) { mpsGeneric = False 
 
 
 
+
 {-===========================================================================-}
 {-                                 runDB                                     -}
 {-===========================================================================-}
@@ -110,6 +110,12 @@ readDBConf fPath = do
 	return $ Y.decodeEither $ fCont
 
 
+
+instance ToJSON Group where 
+instance FromJSON Group where 
+
+instance ToJSON UserTag where
+instance FromJSON UserTag where
 
 instance ToJSON RollingReportConfig where
 instance FromJSON RollingReportConfig where
