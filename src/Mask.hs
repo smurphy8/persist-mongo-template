@@ -317,10 +317,50 @@ doubleToConst dbl = do
 eStringToEText :: Either String a -> Either Text a
 eStringToEText (Left x ) = Left (pack x) 
 eStringToEText (Right x) = Right x
-         
+
+
+returnMaskedOTCResult :: Alarm -> IO (Either Text OnpingTagCombined)
+returnMaskedOTCResult alm = do
+  let mmtid = alarmMaskId alm
+      aPids@(pkey:_) = alarmPids alm
+  mmds <- runDB $ myGet mmtid  
+  aMDS <- case mmds of
+    Nothing -> return $ alarmValue alm
+    (Just mskType) -> return $ maskTypeValue mskType
+  aFcn <- (returnAlarmMaskFcn aPids ) aMDS
+  mEOTC <- runDB $ selectFirst [OnpingTagCombinedPid ==. (Just pkey)] []
+  case entityVal <$> mEOTC of
+    Nothing -> return.Left $ otcErr
+      where otcErr :: Text
+            otcErr = "Error no OnpingTagCombined found returnMaskedOTCResult"
+    (Just pOTC) -> do      
+      let otcResult = onpingTagCombinedResult pOTC
+          cresult = ((textToConst >=> aFcn) <$> otcResult) >>= etom
+          etom (Left _) = Nothing  
+          etom (Right x) = Just x      
+          newOtcResult = constToText <$> cresult
+      return.Right $ (pOTC {onpingTagCombinedResult = newOtcResult})
+
+myGet :: forall (m :: * -> *) val.
+               (PersistStore m, PersistEntity val,
+                PersistMonadBackend m ~ PersistEntityBackend val) =>
+               Maybe (Key val) -> m (Maybe val)
+myGet (Just a) = do 
+   get a 
+myGet Nothing = return Nothing
+
+
+returnAlarmMaskFcn :: [Int] -> MaskDataStore -> IO (Const -> Either String Const)
+returnAlarmMaskFcn apids amds = do
+  eAtcesc <- mdsToFcn apids amds
+  case eAtcesc of
+    Left _ -> return (\ x -> Right $ x)
+    Right acescFcn ->  return acescFcn
+    
 -- ============================================================
 
 getBuiltInIdR :: Monad m => m Value
 getBuiltInIdR = do
 let bil=[minBound..maxBound] :: [BuiltInId]
 return $ toJSON (L.init bil)
+
