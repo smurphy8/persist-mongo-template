@@ -8,16 +8,19 @@ This file starts at 0.2.4 , before that consult commit log
 
 *For complete history please view commit log*
 
-##Current Version 0.3.3
+##Current Version 0.3.4
 --------------------------	
 
 
-### Proposed Release 0.3.4
+### Proposed Release 0.3.5
 ----------------------------
 
 
 
 * Change History* 
++ 0.3.4
+  Add core function for Masks
+  Add some function that come with alarms
 + 0.3.3
   Relaxed Lens versioning some more
   Works with onping-permissions here 
