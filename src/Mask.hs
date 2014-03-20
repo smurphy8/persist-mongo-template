@@ -40,6 +40,32 @@ testCompile = "tst"
 
 maskLookup :: MaskData  -> IO MaskFcn
 maskLookup (MaskData DivByTen  _) =  return $ OneVar $ divBy10
+maskLookup (MaskData DivBy100  _) =  return $ OneVar $ divBy100
+maskLookup (MaskData MultByTen  _) =  return $ OneVar $ multBy10
+maskLookup (MaskData MultBy100  _) =  return $ OneVar $ multBy100
+
+-- | maskLookup for Bit Operation Functions
+maskLookup (MaskData Bit0 _) =  return $ OneVar $ bit0
+maskLookup (MaskData Bit1 _) =  return $ OneVar $ bit1
+maskLookup (MaskData Bit2 _) =  return $ OneVar $ bit2
+maskLookup (MaskData Bit3 _) =  return $ OneVar $ bit3
+maskLookup (MaskData Bit4 _) =  return $ OneVar $ bit4
+maskLookup (MaskData Bit5 _) =  return $ OneVar $ bit5
+maskLookup (MaskData Bit6 _) =  return $ OneVar $ bit6
+maskLookup (MaskData Bit7 _) =  return $ OneVar $ bit7
+maskLookup (MaskData Bit8 _) =  return $ OneVar $ bit8
+maskLookup (MaskData Bit9 _) =  return $ OneVar $ bit9
+maskLookup (MaskData Bit10 _) =  return $ OneVar $ bit10
+maskLookup (MaskData Bit11 _) =  return $ OneVar $ bit11
+maskLookup (MaskData Bit12 _) =  return $ OneVar $ bit12
+maskLookup (MaskData Bit13 _) =  return $ OneVar $ bit13
+maskLookup (MaskData Bit14 _) =  return $ OneVar $ bit14
+maskLookup (MaskData Bit15 _) =  return $ OneVar $ bit15
+
+-- | maskLookup for Identity Function
+maskLookup (MaskData Identity _) =  return $ OneVar $ identity
+
+-- | maskLookup for UserDefined Function
 maskLookup (MaskData UserDefined  um) =  UserDef <$> (tagMapTransform um)
 -- maskLookup (MaskData _  um ) =  return $ OneVar $ (\x -> Right x)
     
@@ -206,7 +232,16 @@ getMaskFunctionDefault pid = do
       edecodeUM <- T.traverse maskLookup decodedMDS 
       return $ maskPullOut <$>  edecodeUM
 
+-- insertPidKeys :: UserMask -> [Int] -> UserMask
 
+mdsToFcn :: [Int] -> MaskDataStore -> IO (Either Text (Const -> Either String Const ))
+mdsToFcn pids mds = do 
+  let emd =  (eStringToEText.maskDataDecode $ mds)
+      eum = ( (\um -> insertPidKeys um pids ) . userMask) <$> emd
+      emd' = eum >>= (\um ->  emd >>= (\md -> return $ md{userMask= um}))
+  (T.traverse maskLookup emd') >>= (\x -> return $ maskPullOut <$> x)
+
+  
 
 onpingTagCombinedDefaultTransform :: OnpingTagCombined -> IO OnpingTagCombined
 onpingTagCombinedDefaultTransform otc = do      
@@ -283,3 +318,9 @@ eStringToEText :: Either String a -> Either Text a
 eStringToEText (Left x ) = Left (pack x) 
 eStringToEText (Right x) = Right x
          
+-- ============================================================
+
+getBuiltInIdR :: Monad m => m Value
+getBuiltInIdR = do
+let bil=[minBound..maxBound] :: [BuiltInId]
+return $ toJSON (L.init bil)
