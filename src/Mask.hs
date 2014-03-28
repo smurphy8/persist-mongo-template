@@ -8,7 +8,7 @@ import Prelude hiding (head, init, last
                       ,readFile, tail, writeFile)
 
 import Control.Monad
-import Control.Lens
+--import Control.Lens
 -- import Control.Lens.At
 import GHC.Generics
 -- import qualified Data.Maybe as MB
@@ -260,7 +260,7 @@ onpingTagHistoryDefaultTransform pids oth = do
   let pairPandF = zip uniquePids uniqueMaskFcns
   return [ f o | o@(OnpingTagHistory ph _ vh) <- oth , (p , f) <- pairPandF , ph == (Just p), vh /= Nothing]
 
-extracted :: Traversable f =>  f Int -> IO (f (OnpingTagHistory -> OnpingTagHistory))
+extracted :: T.Traversable f =>  f Int -> IO (f (OnpingTagHistory -> OnpingTagHistory))
 extracted uniquePids = do
    uniqueCFcns <- T.traverse returnDefaultMaskFunction uniquePids
    
