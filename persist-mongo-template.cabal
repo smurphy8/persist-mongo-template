@@ -1,5 +1,5 @@
 Name:                   persist-mongo-template
-Version:                0.3.4.3
+Version:                0.4.0
 Author:                 Scott Murphy<scottmurphy09@gmail.com>   
 Maintainer:             Scott Murphy<scottmurphy09@gmail.com>
 License:                BSD3
@@ -18,6 +18,7 @@ Library
                         Mask
                         Mask.Types
                         Mask.BuiltIns
+                        Util.CalendarUtil
                         Permissions
                         ContentCfgTypes                        
                         ContentCfgTypes.SplineConfigObj
@@ -40,36 +41,28 @@ Library
 
   Other-Modules:        Persist.Mongo.Settings.Internal
   Build-Depends:         base                     >= 4         &&   < 5
---                        , hspec                    >= 1.7.2    
---                        , safe                     >= 0.3.3     &&   < 0.4.3
-                       , text                     >= 0.11.3.1  &&   < 0.11.3.3
-                       , transformers             >= 0.3.0.0
-                       , lens                     >= 3.9       &&   < 4
-                       , aeson                    >= 0.7.0
-                       , safecopy                 >= 0.8.2
-                       , structured-script-lang   >= 0.1.5
---                        , unordered-containers     >= 0.2.3.3
-                       , hashable                 >= 1.2.1.0
-                       , cereal                   >= 0.4.0.1
-                       , parsec                   
-                       , containers
-                       , bytestring
-                       , time                     >= 1.4.1
-                       , old-locale 
-                       , unordered-containers    >= 0.2        && < 1.0
-
---                        , mongoDB
-                        , yaml                     >= 0.8.5.2
---                        , text
---                        , aeson
---                        , monad-control
-                       , network
-                       , yesod-core
-                       , yesod                  
-                       , template-haskell
-                       , persistent-template                       
-                       , persistent-mongoDB
-                       , persistent
+                       , text                     == 0.11.3.1
+                       , transformers             == 0.3.0.0
+                       , lens                     == 4.1.2
+                       , aeson                    == 0.7.0.2
+                       , safecopy                 == 0.8.3.7569
+                       , structured-script-lang   == 0.1.5
+                       , hashable                 == 1.2.1.0
+                       , cereal                   == 0.4.0.1
+                       , parsec                   == 3.1.5
+                       , containers               == 0.5.0.0
+                       , bytestring               == 0.10.0.2
+                       , time                     == 1.4.2
+                       , old-locale               == 1.0.0.5
+                       , unordered-containers     == 0.2.3.3
+                       , yaml                     == 0.8.8.1
+                       , network                  == 2.4.2.2
+                       , yesod-core               == 1.2.12
+                       , yesod                    == 1.2.5.2
+                       , template-haskell         == 2.8.0.0
+                       , persistent-template      == 1.3.1.3                 
+                       , persistent-mongoDB       == 1.3.0.4
+                       , persistent               == 1.3.0.6
                        
 
                        
@@ -81,47 +74,47 @@ Test-Suite spec
   Ghc-Options:          -Wall
   Main-Is:              Spec.hs
   Build-Depends:        base
-                      , persist-mongo-template
-                      , persistent
+                      , persist-mongo-template   == 0.4.0
+                      , persistent               == 1.3.0.6 
                       , hspec
-                      , yaml
-                      , text
-                      , aeson
-                      , yesod                         
-                      , time
-                      , old-locale
-                      , parsec
-                      , transformers
-                      , bytestring
-                      , template-haskell
-                      , network
-                      , persistent-mongoDB
-                      , containers
-                      , unordered-containers
-                      , lens
+                      , yaml                     == 0.8.8.1
+                      , text                     == 0.11.3.1
+                      , aeson                    == 0.7.0.2
+                      , yesod                    == 1.2.5.2                         
+                      , time                     == 1.4.2
+                      , old-locale               == 1.0.0.5
+                      , parsec                   == 3.1.5
+                      , transformers             == 0.3.0.0
+                      , bytestring               == 0.10.0.2
+                      , template-haskell         == 2.8.0.0
+                      , network                  == 2.4.2.2
+                      , persistent-mongoDB       == 1.3.0.4
+                      , containers               == 0.5.0.0
+                      , unordered-containers     == 0.2.3.3
+                      , lens                     == 4.1.2
+                      , quickcheck               == 2.5.1
 
 Executable persist-mongo-template
     main-is:            Main.hs
     HS-Source-Dirs:     src
     build-depends:      base
-                      , persist-mongo-template
-                      , persistent
-                      , hspec
-                      , yesod
-                      , time
-                      , old-locale
-                      , yaml
-                      , text
-                      , aeson
-                      , parsec
-                      , transformers    
-                      , bytestring
-                      , template-haskell
-                      , network
-                      , persistent-mongoDB
-                      , containers
-                      , unordered-containers
-                      , lens
+                      , persist-mongo-template   == 0.4.0
+                      , persistent               == 1.3.0.6 
+                      , yesod                    == 1.2.5.2
+                      , time                     == 1.4.2
+                      , old-locale               == 1.0.0.5
+                      , yaml                     == 0.8.8.1
+                      , text                     == 0.11.3.1
+                      , aeson                    == 0.7.0.2
+                      , parsec                   == 3.1.5
+                      , transformers             == 0.3.0.0
+                      , bytestring               == 0.10.0.2
+                      , template-haskell         == 2.8.0.0
+                      , network                  == 2.4.2.2
+                      , persistent-mongoDB       == 1.3.0.4
+                      , containers               == 0.5.0.0
+                      , unordered-containers     == 0.2.3.3
+                      , lens                     == 4.1.2
 
     ghc-options:      -threaded -O2 -rtsopts
 

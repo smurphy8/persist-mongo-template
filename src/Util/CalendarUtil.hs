@@ -1,16 +1,18 @@
+{-# LANGUAGE OverloadedStrings #-}
+module Util.CalendarUtil where
 -- import qualified Database.MongoDB as MDB
 import Data.Aeson.Types
 import System.Locale
 import Data.Time
+import Data.Time.Calendar.WeekDate
 import Persist.Mongo.Settings
-
-import Data.Text
-
+import Control.Applicative
+import Yesod hiding (runDB)
 
 
 -- | Helper functions to explicity do type conversion 
 
-isOnDuty :: UserId -> UTCTime -> Bool
+isOnDuty :: UserId -> UTCTime -> IO Bool
 isOnDuty uid time = do
   let day = utctDay time
   let weekDay = (third $ toWeekDate day) - 1
