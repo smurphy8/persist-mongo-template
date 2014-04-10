@@ -23,15 +23,16 @@ UserTag
   group GroupId     -- group this user is a part of by default
   superGroup GroupId   -- owner Group
   defaultDash  DashboardId
-  UniqueUserTag user --REMEMBER THIS HAS TO BE PAIRED WITH AN ENSURE INDEX  
+  phone Int Maybe default = Nothing
+  name Text Maybe default = Nothing
+  UniqueUserTag user --REMEMBER THIS HAS TO BE PAIRED WITH AN ENSURE INDEX
   deriving Generic
+  deriving Typeable
   deriving Read
   deriving Show
   deriving Eq
 
 
-
-  
 -- =====================DASHBOARD TYPES ===============================
 
 Dashboard
@@ -334,7 +335,6 @@ Alarm
  corderId CallOrderId
  pids [Int]
  alarmActive Bool
- userEnabled Bool
  customName Bool
  tripTime Int
  recallTime Int
