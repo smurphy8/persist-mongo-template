@@ -17,7 +17,10 @@ This file starts at 0.2.4 , before that consult commit log
 
 
 
-* Change History* 
+* Change History*
++ 0.4.2
+  Loosened Bindings to aeson and persist
+  used in **single-well**
 + 0.3.4
   Add core function for Masks
   Add some function that come with alarms
