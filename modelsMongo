@@ -204,12 +204,6 @@ Robot
    password Text
    salt Text 
    UniqueRobotName name
-  
-
-SingleWellPoller
-    addr  Text 
-    locations [Int]
-    UniqueSingleWellPollers addr       
 
 
 Unit 
