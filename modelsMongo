@@ -206,6 +206,11 @@ Robot
    UniqueRobotName name
   
 
+SingleWellPoller
+    addr  Text 
+    locations [Int]
+    UniqueSingleWellPollers addr       
+
 
 Unit 
   name Text 

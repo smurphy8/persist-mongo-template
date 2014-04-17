@@ -8,16 +8,18 @@ This file starts at 0.2.4 , before that consult commit log
 
 *For complete history please view commit log*
 
-##Current Version 0.3.4
+##Current Version 0.4.3
 --------------------------	
 
 
-### Proposed Release 0.3.5
+### Proposed Release 0.4.4
 ----------------------------
 
 
 
 * Change History*
++ 0.4.3
+  Added SingleWellPoller datatype
 + 0.4.2
   Loosened Bindings to aeson and persist
   used in **single-well**
