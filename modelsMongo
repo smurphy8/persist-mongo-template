@@ -345,4 +345,10 @@ Alarm
  deriving Generic
 
 -- ==================================================
-
+-- Single Well Types
+-- ==================================================
+SingleWellExtras
+ locationId Int
+ url Text
+ pollTime Int
+ port Int Maybe
