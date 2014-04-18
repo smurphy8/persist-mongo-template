@@ -133,6 +133,8 @@ OnpingTagCombined
   siteIdRef                 Int   Maybe						
   location		    Location Maybe
   pid			    Int Maybe
+  deriving Ord
+  deriving Eq
 
 -- LocationTableWidget
 --   pidlist [Text]
@@ -199,6 +201,8 @@ Location
    delete   Int
    companyIdRef Int
    UniqueLocation refId
+   deriving Ord
+   deriving Eq
 Robot
    name  Text
    password Text
