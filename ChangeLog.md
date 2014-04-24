@@ -8,16 +8,18 @@ This file starts at 0.2.4 , before that consult commit log
 
 *For complete history please view commit log*
 
-##Current Version 0.4.3
+##Current Version 0.4.8
 --------------------------	
 
 
-### Proposed Release 0.4.4
+### Proposed Release 0.4.9
 ----------------------------
 
 
 
 * Change History*
++ 0.4.8
+  isOnDuty used the old runDB instead of runDBConf
 + 0.4.3
   Added SingleWellPoller datatype
 + 0.4.2

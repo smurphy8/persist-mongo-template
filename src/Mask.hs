@@ -88,11 +88,11 @@ triggerTransform (UserMask _ tm) fcn = do
   return $ fcn (VT vtReady)
 
 
-keyTraverseFcn :: Text -> (TagTarget Int) -> IO Const
-keyTraverseFcn _  (TagTarget i _ ) = do
+keyTraverseFcn :: Text -> Text -> (TagTarget Int) -> IO Const
+keyTraverseFcn mdbc _  (TagTarget i _ ) = do
   let eTextToDouble :: Entity OnpingTagCombined  -> Maybe Double
       eTextToDouble = (onpingTagCombinedResult.entityVal) >=> (readMaybe.unpack)
-  v <- runDB $ selectFirst [OnpingTagCombinedPid ==. (Just i)] []
+  v <- runDB mdbc $ selectFirst [OnpingTagCombinedPid ==. (Just i)] []
   case (v >>= eTextToDouble) of
     Just opv -> return (ConstDouble opv)
     Nothing  -> fail "No value found"

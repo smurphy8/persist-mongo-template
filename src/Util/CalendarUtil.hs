@@ -12,12 +12,12 @@ import Yesod hiding (runDB)
 
 -- | Helper functions to explicity do type conversion 
 
-isOnDuty :: UserId -> UTCTime -> IO Bool
-isOnDuty uid time = do
+isOnDuty :: MongoDBConf -> UserId -> UTCTime -> IO Bool
+isOnDuty mdbc uid time = do
   let day = utctDay time
   let weekDay = (third $ toWeekDate day) - 1
   let diffTime = utctDayTime time
-  mcalObj <- runDB $ getBy $ UniqueUserId uid
+  mcalObj <- runDBConf mdbc  $ getBy $ UniqueUserId uid
   case entityVal <$> mcalObj of
     Nothing -> return False
     (Just (CalendarWidget _ _ days hours mins durations _)) -> return $ isWithinTime timeList weekDay diffTime
