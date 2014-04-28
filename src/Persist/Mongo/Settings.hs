@@ -95,7 +95,7 @@ share [mkPersist (mkPersistSettings (ConT ''MongoBackend)) { mpsGeneric = False 
 
 runDB :: forall (m :: * -> *) b.(MonadIO m ,MonadBaseControl IO m) =>
                Action m b -> m b
-runDB a = withMongoDBConn "onping_production" "10.84.207.130" (PortNumber 27017) Nothing 2000 $ \pool -> do 
+runDB a = withMongoDBConn "onping_production" "localhost" (PortNumber 27017) Nothing 2000 $ \pool -> do  -- "10.84.207.130"
   (runMongoDBPool master a )  pool
 
 
