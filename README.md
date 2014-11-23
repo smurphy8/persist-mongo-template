@@ -1,5 +1,5 @@
 # persist-mongo-template
-
+# Deprecated in favor of persist-types which contains the same package
 #changes
 
 Version:                0.1.0
